@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+
+"""Create an ecosnail project"""
+
+import argparse
+import os
+import sys
+
+ECOSNAIL_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+PROJECT_SKELETON = {
+    "{project_name}": {
+        "examples": {
+            "CMakeLists.txt": "ecosnail_example(basic)",
+            "basic.cpp": "int main()\n{\n}\n",
+        },
+        "include": {
+            "ecosnail": {
+                "{project_name}": {},
+            },
+            "{project_name}": "#pragma once\n",
+        },
+        "tests": {
+            "CMakeLists.txt": "ecosnail_test(basic)",
+            "basic.cpp": "int main()\n{\n}\n",
+        },
+        "CMakeLists.txt": "ecosnail_project(\n)\n",
+    },
+}
+
+
+def write_hierarchy(root, hierarchy, params):
+    root = root.format(**params)
+    if isinstance(hierarchy, dict):
+        os.makedirs(root, exist_ok=True)
+        for directory_name, inner_hierarchy in hierarchy.items():
+            directory = os.path.join(root, directory_name)
+            write_hierarchy(directory, inner_hierarchy, params)
+    else:
+        with open(root, "w") as file:
+            file.write(hierarchy)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Create an ecosnail project")
+    parser.add_argument("project_name")
+
+    if len(sys.argv) <= 1:
+        parser.print_help()
+        return
+    args = parser.parse_args()
+
+    write_hierarchy(
+        root=os.path.join(ECOSNAIL_ROOT, "projects"),
+        hierarchy=PROJECT_SKELETON,
+        params={"project_name": args.project_name})
+
+
+if __name__ == "__main__":
+    main()
