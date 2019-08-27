@@ -1,5 +1,5 @@
 add_subdirectory(argo)
-add_subdirectory(config)
+#add_subdirectory(config)
 add_subdirectory(dimentia)
 add_subdirectory(evening)
 add_subdirectory(flat)
