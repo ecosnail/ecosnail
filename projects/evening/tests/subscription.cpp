@@ -2,7 +2,7 @@
 
 #include <ecosnail/evening.hpp>
 
-namespace ev = evening;
+namespace ev = ecosnail::evening;
 
 namespace {
 

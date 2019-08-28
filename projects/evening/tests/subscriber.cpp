@@ -5,7 +5,7 @@
 #include <memory>
 #include <iostream>
 
-namespace ev = evening;
+namespace ev = ecosnail::evening;
 
 namespace {
 

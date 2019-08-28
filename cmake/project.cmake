@@ -1,6 +1,6 @@
 macro(ecosnail_project)
     set(options HEADER_ONLY)
-    set(oneValueArgs CXX)
+    set(oneValueArgs "")
     set(multiValueArgs DEPENDS SOURCES)
     cmake_parse_arguments(
         ARGS
@@ -15,11 +15,6 @@ macro(ecosnail_project)
 
     if(ARGS_UNPARSED_ARGUMENTS)
         message(SEND_ERROR "Unrecognized arguments to ecosnail_project() in '${ARGS_NAME}' project: ${ARGS_UNPARSED_ARGUMENTS}")
-    endif()
-
-    if(ARGS_CXX)
-        set(CMAKE_CXX_STANDARD ${ARGS_CXX})
-        set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
     endif()
 
     if(ARGS_SOURCES)

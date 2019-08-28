@@ -8,7 +8,7 @@
 #include <memory>
 #include <numeric>
 
-namespace evening {
+namespace ecosnail::evening {
 
 class Channel final {
 public:
@@ -147,4 +147,4 @@ private:
     std::shared_ptr<char> _lifeTracker = std::make_shared<char>();
 };
 
-} // namespace evening
+} // namespace ecosnail::evening

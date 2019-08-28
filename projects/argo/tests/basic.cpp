@@ -98,4 +98,3 @@ TEST_CASE("Command line description mistakes", "[checks]")
     //    REQUIRE(!success);
     //}
 }
-

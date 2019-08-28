@@ -17,6 +17,12 @@
 namespace ecosnail::thing {
 
 class EntityManager {
+    template <class Component>
+    using ComponentMap = std::map<Entity, Component>;
+
+    template <class Component>
+    static ComponentMap<Component> emptyComponentMap;
+
 public:
     template <class Component>
     const Component& component(Entity entity) const
@@ -45,40 +51,36 @@ public:
     template <class Component>
     auto components() const
     {
-        using ComponentMap = std::map<Entity, Component>;
-
         auto it = _components.find(typeid(Component));
         if (it == _components.end()) {
-            return tail::valueRange<const ComponentMap>();
+            const auto& empty = emptyComponentMap<Component>;
+            return tail::valueRange(empty);
         }
 
         const auto& componentMap =
-            std::any_cast<const ComponentMap&>(it->second);
+            std::any_cast<const ComponentMap<Component>&>(it->second);
         return tail::valueRange(componentMap);
     }
 
     template <class Component>
     auto components()
     {
-        using MapRef = std::map<Entity, Component>&;
-
         auto it = _components.find(typeid(Component));
         if (it == _components.end()) {
-            return tail::valueRange<MapRef>();
+            return tail::valueRange(emptyComponentMap<Component>);
         }
 
-        auto& componentMap = std::any_cast<MapRef>(it->second);
+        auto& componentMap =
+            std::any_cast<ComponentMap<Component>&>(it->second);
         return tail::valueRange(componentMap);
     }
 
     template <class Component>
     auto entities() const
     {
-        using MapRef = const std::map<Entity, Component>&;
-
         auto it = _components.find(typeid(Component));
         if (it == _components.end()) {
-            return tail::keyRange<MapRef>();
+            return tail::keyRange(emptyComponentMap<Component>);
         }
 
         const auto& componentMap =
@@ -126,5 +128,8 @@ private:
     EntityPool _entityPool;
     std::map<std::type_index, std::any> _components;
 };
+
+template <class Component>
+EntityManager::ComponentMap<Component> EntityManager::emptyComponentMap;
 
 } // namespace ecosnail::thing
